@@ -1,0 +1,92 @@
+<!--
+ * @Author: liuwei 893624020@qq.com
+ * @Date: 2024-11-12 11:43:22
+ * @LastEditors: liuwei 893624020@qq.com
+ * @LastEditTime: 2024-11-12 11:44:07
+ * @FilePath: \leaflet\index.html
+ * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
+-->
+<!DOCTYPE html>
+<html style="overflow: hidden">
+  <head>
+    <title>中地数码-WMTS</title>
+    <meta name="content-type" content="text/html; charset=UTF-8" />
+    <meta
+      name="viewport"
+      content="width=device-width,target-densitydpi=high-dpi,initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no"
+    />
+  </head>
+
+  <body onload="init()" style="margin: 0">
+    <div
+      id="map"
+      class="map"
+      style="position: absolute; bottom: 0px; top: 0px; width: 100%"
+    ></div>
+
+    <!-- leaflet -->
+    <link rel="stylesheet" href="./leaflet/leaflet.css" />
+    <script src="./leaflet/leaflet.js" type="text/javascript"></script>
+    <script src="./leaflet/leaflet.tilelayer.wmts.min.js" type="text/javascript"></script>
+    <script src="./leaflet/CustomWebSDK.js" type="text/javascript"></script>
+
+    <script src="./leaflet/proj4-src.min.js"></script>
+    <script src="./leaflet/proj4leaflet.min.js"></script>
+    <script>
+      function init() {
+        var dpi = 96;
+        // 米 -> 度（地球球面） 转换系数
+        var meterToRadiusRatio = 111194.872221777;
+        // 英尺 -> 米 转换系数
+        var inchToMeterRatio = 0.0254000508;
+
+        var scaleDenominators = [
+          400000.0, 200000.0, 150000.0, 100000.0,
+          50000.0, 20000.0, 10000.0, 5000.0,
+          2000.0, 1000.0, 500.0
+        ];
+
+        // 通过Scale Denominator计算分辨率
+        function calcResolution(scaleDenominator) {
+          return (
+            (scaleDenominator * inchToMeterRatio) / (dpi * meterToRadiusRatio)
+          );
+        }
+        
+        let resolutions = []
+        scaleDenominators.forEach(item => {
+          resolutions.push(calcResolution(item))
+        })
+        console.log(resolutions)
+        const crs4490 = new L.Proj.CRS('EPSG:4490', '+proj=longlat +ellps=GRS80 +no_defs +type=crs', {
+          resolutions: resolutions,
+          origin: [108.8817860929267, 25.619389912986893] 
+        })
+
+        const map = L.map("map", {
+          crs: crs4490,
+        }).setView([21.79, 110.71], 9);
+
+        // map.fitBounds([
+        //   [108.87, 20.211],
+        //   [118.071, 25.6193]
+        // ]);
+
+        const url = "http://19.45.1.42:8021/zgjcs/rest/services/SZMAP_ZW_2024_Q2_4490/WMTSServer";
+          // '/igs/rest/services/SZMAP_ZW_2024_Q2_4490/WMTSServer?token=846d7b91-d2a3-4edb-978c-48063e2840ef'
+        addWMTSLayer(map, url, '846d7b91-d2a3-4edb-978c-48063e2840ef');
+      }
+
+      function addWMTSLayer(map, url, token) {
+        new L.TileLayer.WMTS(
+          url,
+          {
+            token: token,
+            layer: "SZMAP_ZW_2024_Q2_4490", //名称
+            tileSize: 512
+          }
+        ).addTo(map);
+      }
+    </script>
+  </body>
+</html>

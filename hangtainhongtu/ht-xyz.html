@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html style="overflow: hidden">
+  <head>
+    <title>demo</title>
+    <meta name="content-type" content="text/html; charset=UTF-8" />
+    <meta
+      name="viewport"
+      content="width=device-width,target-densitydpi=high-dpi,initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no"
+    />
+  </head>
+
+  <body onload="init()" style="margin: 0">
+    <div
+      id="map"
+      class="map"
+      style="position: absolute; bottom: 0px; top: 0px; width: 100%"
+    ></div>
+
+    <!-- leaflet -->
+    <link rel="stylesheet" href="./leaflet/leaflet.css" />
+    <script src="./leaflet/leaflet.js" type="text/javascript"></script>
+    <script src="./leaflet/leaflet.tilelayer.wmts.min.js" type="text/javascript"></script>
+    <script src="./leaflet/CustomWebSDK.js" type="text/javascript"></script>
+    <script>
+      const mapUrlFormatter = (url) => {
+        url = url.replace("l={TileMatrix}", "l={z}");
+        url = url.replace("y={TileRow}", "y={y}");
+        url = url.replace("x={TileCol}", "x={x}");
+        if (url.indexOf("&l={z}") === -1 && url.indexOf("l={z}") === -1) {
+          url = url + "&l={z}";
+        }
+        if (url.indexOf("&y={y}") === -1 && url.indexOf("y={y}") === -1) {
+          url = url + "&y={y}";
+        }
+        if (url.indexOf("&x={x}") === -1 && url.indexOf("x={x}") === -1) {
+          url = url + "&x={x}";
+        }
+        if (
+          url.indexOf("&tileType=1") === -1 &&
+          url.indexOf("tileType=1") === -1
+        ) {
+          url = url + "&tileType=1";
+        }
+        return url;
+      };
+      function init() {
+        const map = L.map("map", {
+          inertiaDeceleration: 15000,
+          crs: L.CRS.CustomEPSG4326,
+        }).setView([21.79, 110.71], 8);
+
+        const searchParams = new URLSearchParams(window.location.search);
+        const params = searchParams.get("params");
+        const cataId = searchParams.get("cataId");
+        console.log(params, cataId);
+
+        if (type == 'ht') {
+          const url =
+            layerUrl ||
+            "http://19.25.38.79:8021/mapserver/layer/WMTS/1.0/广东省市级行政区划/广东省市级行政区划/getTile/{TileMatrix}/{TileRow}/{TileCol}";
+          addLayers(map, url);
+        } else {
+          const url =
+            layerUrl ||
+            "http://19.45.1.42:8021/zgjcs/rest/services/SZMAP_ZW_2024_Q2_4490/WMTSServer";
+            // '/igs/rest/services/SZMAP_ZW_2024_Q2_4490/WMTSServer?token=846d7b91-d2a3-4edb-978c-48063e2840ef'
+          addWMTSLayer(map, url, '846d7b91-d2a3-4edb-978c-48063e2840ef');
+        }
+      }
+
+      function addWMTSLayer(map, url, token) {
+        new L.TileLayer.WMTS(
+          url,
+          {
+            token: token,
+            layer: "SZMAP_ZW_2024_Q2_4490", //名称
+            style: "default", //样式
+            format: "image/png",
+            matrixIds: "default",
+            attribution: "4490",
+          }
+        ).addTo(map);
+      }
+
+      function addLayers(map, url) {
+        if (!url) return;
+        let _url = mapUrlFormatter(url);
+        if (_url.includes("label")) {
+          // eslint-disable-next-line no-undef
+          const labelLayer = new L.GWVTAnno({ tileSize: 512 });
+          // eslint-disable-next-line no-undef
+          const dataSource = new CustomLeaflet.URLDataSource();
+          dataSource.url = _url;
+          labelLayer.addDataSource(dataSource);
+          map.addLayer(labelLayer);
+        } else if (url.includes("TileMatrix")) {
+          _url = url
+            .replace("{TileMatrix}", "{z}")
+            .replace("{TileCol}", "{x}")
+            .replace("{TileRow}", "{y}");
+          // eslint-disable-next-line no-undef
+          const mapLayers = L.tileLayer(_url, { maxZoom: 20, tileSize: 512 });
+          map.addLayer(mapLayers);
+        } else {
+          // eslint-disable-next-line no-undef
+          const mapLayers = new L.GXYZ(_url, { tileSize: 512 });
+          map.addLayer(mapLayers);
+        }
+      }
+    </script>
+  </body>
+</html>

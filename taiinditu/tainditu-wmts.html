@@ -1,0 +1,98 @@
+<!--
+ * @Author: liuwei 893624020@qq.com
+ * @Date: 2024-11-11 19:51:59
+ * @LastEditors: liuwei 893624020@qq.com
+ * @LastEditTime: 2024-11-12 11:46:44
+ * @FilePath: \IGServer-leaflet\tainditu.html
+ * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
+-->
+<!DOCTYPE html>
+<html style="overflow: hidden">
+  <head>
+    <title>天地图-WMTS</title>
+    <meta name="content-type" content="text/html; charset=UTF-8" />
+    <meta
+      name="viewport"
+      content="width=device-width,target-densitydpi=high-dpi,initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no"
+    />
+  </head>
+
+  <body onload="init()" style="margin: 0">
+    <div
+      id="map"
+      class="map"
+      style="position: absolute; bottom: 0px; top: 0px; width: 100%"
+    ></div>
+
+    <!-- leaflet -->
+    <link rel="stylesheet" href="../leaflet/leaflet.css" />
+    <script src="../leaflet/leaflet.js" type="text/javascript"></script>
+    <script
+      src="../leaflet/leaflet.tilelayer.wmts.min.js"
+      type="text/javascript"
+    ></script>
+    <script src="../leaflet/CustomWebSDK.js" type="text/javascript"></script>
+
+    <script src="../leaflet/proj4-src.min.js"></script>
+    <script src="../leaflet/proj4leaflet.min.js"></script>
+    <script>
+      function init() {
+        // WGS84（WKID:4326）坐标系DPI
+        var dpi = 96;
+        // 米 -> 度（地球球面） 转换系数
+        var meterToRadiusRatio = 111194.872221777;
+        // 英尺 -> 米 转换系数
+        var inchToMeterRatio = 0.0254000508;
+
+        //天地图底图Scale Denominator，从WMTS服务中获取
+        var scaleDenominators = [
+          295829355.454566, 147914677.727283, 73957338.863641, 36978669.431821,
+          18489334.71591, 9244667.357955, 4622333.678978, 2311166.839489,
+          1155583.419744, 577791.709872, 288895.854936, 144447.927468,
+          72223.963734, 36111.981867, 18055.990934, 9027.995467, 4513.997733,
+          2256.998867, 1128.499433,
+        ];
+
+        // 通过Scale Denominator计算分辨率
+        function calcResolution(scaleDenominator) {
+          return (
+            2 * (scaleDenominator * inchToMeterRatio) / (dpi * meterToRadiusRatio)
+          );
+        }
+        
+        let resolutions = []
+        scaleDenominators.forEach(item => {
+          resolutions.push(calcResolution(item))
+        })
+        console.log(resolutions)
+        // const item = 0.0254 * 360 / 96 / 2 / Math.PI / 6378137
+        // const item = 0.00028;
+        const crs4490 = new L.Proj.CRS(
+          "EPSG:4490",
+          "+proj=longlat +ellps=GRS80 +no_defs +type=crs",
+          {
+            resolutions: resolutions,
+            origin: [-180.0, 90.0],
+          }
+        );
+
+        const map = L.map("map", {
+          crs: crs4490,
+        }).setView([21.79, 110.71], 8); 
+        // 109.947146, 40.619721
+        // 21.79, 110.71
+
+        const url = "http://t0.tianditu.gov.cn/img_c/wmts";
+        addWMTSLayer(map, url);
+      }
+
+      function addWMTSLayer(map, url) {
+        new L.TileLayer.WMTS(url, {
+          tk: "18822034646069369d70e5264082114f",
+          layer: 'img_c',
+          // tileSize: 512
+        }).addTo(map);
+      }
+    </script>
+  </body>
+</html>
