@@ -2,7 +2,7 @@
  * @Author: liuwei 893624020@qq.com
  * @Date: 2024-11-11 19:51:59
  * @LastEditors: liuwei 893624020@qq.com
- * @LastEditTime: 2024-11-12 16:02:07
+ * @LastEditTime: 2024-11-12 17:19:22
  * @FilePath: \IGServer-leaflet\tainditu.html
  * @Description: 天地图-WMTS服务
 -->
@@ -56,15 +56,16 @@
         // 通过Scale Denominator计算分辨率
         function calcResolution(scaleDenominator) {
           return (
-            2 * (scaleDenominator * inchToMeterRatio) / (dpi * meterToRadiusRatio)
+            (2 * (scaleDenominator * inchToMeterRatio)) /
+            (dpi * meterToRadiusRatio)
           );
         }
-        
-        let resolutions = []
-        scaleDenominators.forEach(item => {
-          resolutions.push(calcResolution(item))
-        })
-        console.log(resolutions)
+
+        let resolutions = [];
+        scaleDenominators.forEach((item) => {
+          resolutions.push(calcResolution(item));
+        });
+        console.log(resolutions);
         // const item = 0.0254 * 360 / 96 / 2 / Math.PI / 6378137
         // const item = 0.00028;
         const crs4490 = new L.Proj.CRS(
@@ -77,20 +78,25 @@
         );
 
         const map = L.map("map", {
-          crs: crs4490,
-        }).setView([21.79, 110.71], 8); 
+          // crs: crs4490,
+        }).setView([21.79, 110.71], 9);
         // 109.947146, 40.619721
         // 21.79, 110.71
 
-        const url = "http://t0.tianditu.gov.cn/img_c/wmts";
-        addWMTSLayer(map, url);
+        const url = "http://t0.tianditu.gov.cn/img_w/wmts";
+        addWMTSLayer(map, url, "img");
+
+        const labelUrl = "http://t1.tianditu.gov.cn/cia_w/wmts";
+        addWMTSLayer(map, labelUrl, "cia");
       }
 
-      function addWMTSLayer(map, url) {
+      function addWMTSLayer(map, url, layer) {
         new L.TileLayer.WMTS(url, {
           tk: "18822034646069369d70e5264082114f",
-          layer: 'img_c',
-          // tileSize: 512
+          layer: layer,
+          format: 'tiles',
+          tileMatrixSet: 'w',
+          tileSize: 256
         }).addTo(map);
       }
     </script>
