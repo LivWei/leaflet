@@ -93,12 +93,11 @@
           //maxzoom,minzoom以及layer的zoom需在0-8 总共只有九级别
         }).setView([30.488466965192984, 114.55365478992464], 5);
 
-        addWMTSLayer(map, testurl3, "846d7b91-d2a3-4edb-978c-48063e2840ef");
+        addWMTSLayer(map, testurl3);
       }
 
-      function addWMTSLayer(map, url, token) {
+      function addWMTSLayer(map, url) {
         new L.TileLayer.WMTS(url, {
-          tk: "18822034646069369d70e5264082114f",
           layer: "MyMapService3",
           tileSize: 512,
           zoomOffset: 0,

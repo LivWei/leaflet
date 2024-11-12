@@ -1,0 +1,195 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Capabilities xmlns="http://www.opengis.net/wmts/1.0"
+xmlns:ows="http://www.opengis.net/ows/1.1"
+xmlns:xlink="http://www.w3.org/1999/xlink"
+xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+xmlns:gml="http://www.opengis.net/gml"
+xsi:schemaLocation="http://www.opengis.net/wmts/1.0 http://schemas.opengis.net/wmts/1.0/wmtsGetCapabilities_response.xsd"
+version="1.0.0">
+<!-- Service Identification --> <ows:ServiceIdentification>
+<ows:Title>MyMapService3</ows:Title>
+<ows:ServiceType>OGC WMTS</ows:ServiceType>
+<ows:ServiceTypeVersion>1.0.0</ows:ServiceTypeVersion>
+</ows:ServiceIdentification> <!-- Operations Metadata --> <ows:OperationsMetadata>
+<ows:Operation name="GetCapabilities">
+<ows:DCP>
+<ows:HTTP>
+<ows:Get xlink:href="http://localhost:6080/arcgis/rest/services/MyMapService3/MapServer/WMTS/1.0.0/WMTSCapabilities.xml">
+<ows:Constraint name="GetEncoding">
+<ows:AllowedValues>
+<ows:Value>RESTful</ows:Value>
+</ows:AllowedValues>
+</ows:Constraint>
+</ows:Get>
+<!-- add KVP binding in 10.1 -->
+<ows:Get xlink:href="http://localhost:6080/arcgis/rest/services/MyMapService3/MapServer/WMTS?">
+<ows:Constraint name="GetEncoding">
+<ows:AllowedValues>
+<ows:Value>KVP</ows:Value>
+</ows:AllowedValues>
+</ows:Constraint>
+</ows:Get>
+</ows:HTTP>
+</ows:DCP>
+</ows:Operation>
+<ows:Operation name="GetTile">
+<ows:DCP>
+<ows:HTTP>
+<ows:Get xlink:href="http://localhost:6080/arcgis/rest/services/MyMapService3/MapServer/WMTS/tile/1.0.0/">
+<ows:Constraint name="GetEncoding">
+<ows:AllowedValues>
+<ows:Value>RESTful</ows:Value>
+</ows:AllowedValues>
+</ows:Constraint>
+</ows:Get>
+<ows:Get xlink:href="http://localhost:6080/arcgis/rest/services/MyMapService3/MapServer/WMTS?">
+<ows:Constraint name="GetEncoding">
+<ows:AllowedValues>
+<ows:Value>KVP</ows:Value>
+</ows:AllowedValues>
+</ows:Constraint>
+</ows:Get>
+</ows:HTTP>
+</ows:DCP>
+</ows:Operation>
+</ows:OperationsMetadata> <Contents>
+<!--Layer--> <Layer>
+<ows:Title>MyMapService3</ows:Title> <ows:Identifier>MyMapService3</ows:Identifier>
+<ows:BoundingBox crs="urn:ogc:def:crs:EPSG::4326">
+<ows:LowerCorner>30.03712542 113.77092591</ows:LowerCorner>
+<ows:UpperCorner>31.30476889 115.0110277</ows:UpperCorner>
+</ows:BoundingBox> <ows:WGS84BoundingBox crs="urn:ogc:def:crs:OGC:2:84">
+<ows:LowerCorner>113.77092591 30.03712542</ows:LowerCorner>
+<ows:UpperCorner>115.0110277 31.30476889</ows:UpperCorner>
+</ows:WGS84BoundingBox>
+<Style isDefault="true">
+<ows:Title>Default Style</ows:Title>
+<ows:Identifier>default</ows:Identifier>
+</Style>
+<Format>image/png</Format>
+<TileMatrixSetLink>
+<TileMatrixSet>default028mm</TileMatrixSet>
+</TileMatrixSetLink>
+<ResourceURL format="image/png" resourceType="tile" template="http://localhost:6080/arcgis/rest/services/MyMapService3/MapServer/WMTS/tile/1.0.0/MyMapService3/{Style}/{TileMatrixSet}/{TileMatrix}/{TileRow}/{TileCol}.png" />
+</Layer> <!--TileMatrixSet-->
+<TileMatrixSet>
+<ows:Title>TileMatrix using 0.28mm</ows:Title>
+<ows:Abstract>The tile matrix set that has scale values calculated based on the dpi defined by OGC specification (dpi assumes 0.28mm as the physical distance of a pixel).</ows:Abstract> <ows:Identifier>default028mm</ows:Identifier>
+<ows:SupportedCRS>urn:ogc:def:crs:EPSG::4326</ows:SupportedCRS>
+<TileMatrix>
+<ows:Identifier>0</ows:Identifier>
+<ScaleDenominator>1.3961409998151574E8</ScaleDenominator>
+<TopLeftCorner>90.0 -180.0</TopLeftCorner> <TileWidth>512</TileWidth> <TileHeight>512</TileHeight>
+<MatrixWidth>2</MatrixWidth> <MatrixHeight>1</MatrixHeight>
+</TileMatrix>
+<TileMatrix>
+<ows:Identifier>1</ows:Identifier>
+<ScaleDenominator>6.980704999075785E7</ScaleDenominator>
+<TopLeftCorner>90.0 -180.0</TopLeftCorner> <TileWidth>512</TileWidth> <TileHeight>512</TileHeight>
+<MatrixWidth>4</MatrixWidth> <MatrixHeight>1</MatrixHeight>
+</TileMatrix>
+<TileMatrix>
+<ows:Identifier>2</ows:Identifier>
+<ScaleDenominator>3.4903524995378934E7</ScaleDenominator>
+<TopLeftCorner>90.0 -180.0</TopLeftCorner> <TileWidth>512</TileWidth> <TileHeight>512</TileHeight>
+<MatrixWidth>7</MatrixWidth> <MatrixHeight>2</MatrixHeight>
+</TileMatrix>
+<TileMatrix>
+<ows:Identifier>3</ows:Identifier>
+<ScaleDenominator>1.7451762497689467E7</ScaleDenominator>
+<TopLeftCorner>90.0 -180.0</TopLeftCorner> <TileWidth>512</TileWidth> <TileHeight>512</TileHeight>
+<MatrixWidth>14</MatrixWidth> <MatrixHeight>3</MatrixHeight>
+</TileMatrix>
+<TileMatrix>
+<ows:Identifier>4</ows:Identifier>
+<ScaleDenominator>8725881.248844732</ScaleDenominator>
+<TopLeftCorner>90.0 -180.0</TopLeftCorner> <TileWidth>512</TileWidth> <TileHeight>512</TileHeight>
+<MatrixWidth>27</MatrixWidth> <MatrixHeight>6</MatrixHeight>
+</TileMatrix>
+<TileMatrix>
+<ows:Identifier>5</ows:Identifier>
+<ScaleDenominator>4362940.624422367</ScaleDenominator>
+<TopLeftCorner>90.0 -180.0</TopLeftCorner> <TileWidth>512</TileWidth> <TileHeight>512</TileHeight>
+<MatrixWidth>53</MatrixWidth> <MatrixHeight>11</MatrixHeight>
+</TileMatrix>
+<TileMatrix>
+<ows:Identifier>6</ows:Identifier>
+<ScaleDenominator>2181470.3122111834</ScaleDenominator>
+<TopLeftCorner>90.0 -180.0</TopLeftCorner> <TileWidth>512</TileWidth> <TileHeight>512</TileHeight>
+<MatrixWidth>105</MatrixWidth> <MatrixHeight>22</MatrixHeight>
+</TileMatrix>
+<TileMatrix>
+<ows:Identifier>7</ows:Identifier>
+<ScaleDenominator>1090735.1561055912</ScaleDenominator>
+<TopLeftCorner>90.0 -180.0</TopLeftCorner> <TileWidth>512</TileWidth> <TileHeight>512</TileHeight>
+<MatrixWidth>210</MatrixWidth> <MatrixHeight>43</MatrixHeight>
+</TileMatrix>
+<TileMatrix>
+<ows:Identifier>8</ows:Identifier>
+<ScaleDenominator>545367.5780527958</ScaleDenominator>
+<TopLeftCorner>90.0 -180.0</TopLeftCorner> <TileWidth>512</TileWidth> <TileHeight>512</TileHeight>
+<MatrixWidth>420</MatrixWidth> <MatrixHeight>86</MatrixHeight>
+</TileMatrix>
+<TileMatrix>
+<ows:Identifier>9</ows:Identifier>
+<ScaleDenominator>272683.7890263979</ScaleDenominator>
+<TopLeftCorner>90.0 -180.0</TopLeftCorner> <TileWidth>512</TileWidth> <TileHeight>512</TileHeight>
+<MatrixWidth>840</MatrixWidth> <MatrixHeight>171</MatrixHeight>
+</TileMatrix>
+<TileMatrix>
+<ows:Identifier>10</ows:Identifier>
+<ScaleDenominator>136341.89451319896</ScaleDenominator>
+<TopLeftCorner>90.0 -180.0</TopLeftCorner> <TileWidth>512</TileWidth> <TileHeight>512</TileHeight>
+<MatrixWidth>1679</MatrixWidth> <MatrixHeight>342</MatrixHeight>
+</TileMatrix>
+<TileMatrix>
+<ows:Identifier>11</ows:Identifier>
+<ScaleDenominator>68170.94725659948</ScaleDenominator>
+<TopLeftCorner>90.0 -180.0</TopLeftCorner> <TileWidth>512</TileWidth> <TileHeight>512</TileHeight>
+<MatrixWidth>3357</MatrixWidth> <MatrixHeight>683</MatrixHeight>
+</TileMatrix>
+<TileMatrix>
+<ows:Identifier>12</ows:Identifier>
+<ScaleDenominator>34085.47362829974</ScaleDenominator>
+<TopLeftCorner>90.0 -180.0</TopLeftCorner> <TileWidth>512</TileWidth> <TileHeight>512</TileHeight>
+<MatrixWidth>6714</MatrixWidth> <MatrixHeight>1365</MatrixHeight>
+</TileMatrix>
+<TileMatrix>
+<ows:Identifier>13</ows:Identifier>
+<ScaleDenominator>17042.73681414987</ScaleDenominator>
+<TopLeftCorner>90.0 -180.0</TopLeftCorner> <TileWidth>512</TileWidth> <TileHeight>512</TileHeight>
+<MatrixWidth>13427</MatrixWidth> <MatrixHeight>2729</MatrixHeight>
+</TileMatrix>
+<TileMatrix>
+<ows:Identifier>14</ows:Identifier>
+<ScaleDenominator>8521.368407074935</ScaleDenominator>
+<TopLeftCorner>90.0 -180.0</TopLeftCorner> <TileWidth>512</TileWidth> <TileHeight>512</TileHeight>
+<MatrixWidth>26853</MatrixWidth> <MatrixHeight>5458</MatrixHeight>
+</TileMatrix>
+<TileMatrix>
+<ows:Identifier>15</ows:Identifier>
+<ScaleDenominator>4260.6842035374675</ScaleDenominator>
+<TopLeftCorner>90.0 -180.0</TopLeftCorner> <TileWidth>512</TileWidth> <TileHeight>512</TileHeight>
+<MatrixWidth>53706</MatrixWidth> <MatrixHeight>10916</MatrixHeight>
+</TileMatrix>
+<TileMatrix>
+<ows:Identifier>16</ows:Identifier>
+<ScaleDenominator>2130.3421017687338</ScaleDenominator>
+<TopLeftCorner>90.0 -180.0</TopLeftCorner> <TileWidth>512</TileWidth> <TileHeight>512</TileHeight>
+<MatrixWidth>107411</MatrixWidth> <MatrixHeight>21832</MatrixHeight>
+</TileMatrix>
+<TileMatrix>
+<ows:Identifier>17</ows:Identifier>
+<ScaleDenominator>1065.1710508843673</ScaleDenominator>
+<TopLeftCorner>90.0 -180.0</TopLeftCorner> <TileWidth>512</TileWidth> <TileHeight>512</TileHeight>
+<MatrixWidth>214821</MatrixWidth> <MatrixHeight>43664</MatrixHeight>
+</TileMatrix>
+<TileMatrix>
+<ows:Identifier>18</ows:Identifier>
+<ScaleDenominator>532.5855254421837</ScaleDenominator>
+<TopLeftCorner>90.0 -180.0</TopLeftCorner> <TileWidth>512</TileWidth> <TileHeight>512</TileHeight>
+<MatrixWidth>429641</MatrixWidth> <MatrixHeight>87328</MatrixHeight>
+</TileMatrix>
+</TileMatrixSet>
+</Contents>
+<ServiceMetadataURL xlink:href="http://localhost:6080/arcgis/rest/services/MyMapService3/MapServer/WMTS/1.0.0/WMTSCapabilities.xml" /> </Capabilities>

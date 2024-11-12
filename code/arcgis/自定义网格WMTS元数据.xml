@@ -1,0 +1,135 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Capabilities xmlns="http://www.opengis.net/wmts/1.0"
+xmlns:ows="http://www.opengis.net/ows/1.1"
+xmlns:xlink="http://www.w3.org/1999/xlink"
+xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+xmlns:gml="http://www.opengis.net/gml"
+xsi:schemaLocation="http://www.opengis.net/wmts/1.0 http://schemas.opengis.net/wmts/1.0/wmtsGetCapabilities_response.xsd"
+version="1.0.0">
+<!-- Service Identification --> <ows:ServiceIdentification>
+<ows:Title>testmap_MyMapService</ows:Title>
+<ows:ServiceType>OGC WMTS</ows:ServiceType>
+<ows:ServiceTypeVersion>1.0.0</ows:ServiceTypeVersion>
+</ows:ServiceIdentification> <!-- Operations Metadata --> <ows:OperationsMetadata>
+<ows:Operation name="GetCapabilities">
+<ows:DCP>
+<ows:HTTP>
+<ows:Get xlink:href="http://localhost:6080/arcgis/rest/services/testmap/MyMapService/MapServer/WMTS/1.0.0/WMTSCapabilities.xml">
+<ows:Constraint name="GetEncoding">
+<ows:AllowedValues>
+<ows:Value>RESTful</ows:Value>
+</ows:AllowedValues>
+</ows:Constraint>
+</ows:Get>
+<!-- add KVP binding in 10.1 -->
+<ows:Get xlink:href="http://localhost:6080/arcgis/rest/services/testmap/MyMapService/MapServer/WMTS?">
+<ows:Constraint name="GetEncoding">
+<ows:AllowedValues>
+<ows:Value>KVP</ows:Value>
+</ows:AllowedValues>
+</ows:Constraint>
+</ows:Get>
+</ows:HTTP>
+</ows:DCP>
+</ows:Operation>
+<ows:Operation name="GetTile">
+<ows:DCP>
+<ows:HTTP>
+<ows:Get xlink:href="http://localhost:6080/arcgis/rest/services/testmap/MyMapService/MapServer/WMTS/tile/1.0.0/">
+<ows:Constraint name="GetEncoding">
+<ows:AllowedValues>
+<ows:Value>RESTful</ows:Value>
+</ows:AllowedValues>
+</ows:Constraint>
+</ows:Get>
+<ows:Get xlink:href="http://localhost:6080/arcgis/rest/services/testmap/MyMapService/MapServer/WMTS?">
+<ows:Constraint name="GetEncoding">
+<ows:AllowedValues>
+<ows:Value>KVP</ows:Value>
+</ows:AllowedValues>
+</ows:Constraint>
+</ows:Get>
+</ows:HTTP>
+</ows:DCP>
+</ows:Operation>
+</ows:OperationsMetadata> <Contents>
+<!--Layer--> <Layer>
+<ows:Title>testmap_MyMapService</ows:Title> <ows:Identifier>testmap_MyMapService</ows:Identifier>
+<ows:BoundingBox crs="urn:ogc:def:crs:EPSG::4326">
+<ows:LowerCorner>30.0036129 113.70431638765065</ows:LowerCorner>
+<ows:UpperCorner>31.34498940297883 115.0018347</ows:UpperCorner>
+</ows:BoundingBox> <ows:WGS84BoundingBox crs="urn:ogc:def:crs:OGC:2:84">
+<ows:LowerCorner>113.70431638765065 30.0036129</ows:LowerCorner>
+<ows:UpperCorner>115.0018347 31.34498940297883</ows:UpperCorner>
+</ows:WGS84BoundingBox>
+<Style isDefault="true">
+<ows:Title>Default Style</ows:Title>
+<ows:Identifier>default</ows:Identifier>
+</Style>
+<Format>image/png</Format>
+<TileMatrixSetLink>
+<TileMatrixSet>default028mm</TileMatrixSet>
+</TileMatrixSetLink>
+<ResourceURL format="image/png" resourceType="tile" template="http://localhost:6080/arcgis/rest/services/testmap/MyMapService/MapServer/WMTS/tile/1.0.0/testmap_MyMapService/{Style}/{TileMatrixSet}/{TileMatrix}/{TileRow}/{TileCol}.png" />
+</Layer> <!--TileMatrixSet-->
+<TileMatrixSet>
+<ows:Title>TileMatrix using 0.28mm</ows:Title>
+<ows:Abstract>The tile matrix set that has scale values calculated based on the dpi defined by OGC specification (dpi assumes 0.28mm as the physical distance of a pixel).</ows:Abstract> <ows:Identifier>default028mm</ows:Identifier>
+<ows:SupportedCRS>urn:ogc:def:crs:EPSG::4326</ows:SupportedCRS>
+<TileMatrix>
+<ows:Identifier>0</ows:Identifier>
+<ScaleDenominator>3779769.4643003587</ScaleDenominator>
+<TopLeftCorner>399.9999999999998 -400.0</TopLeftCorner> <TileWidth>512</TileWidth> <TileHeight>512</TileHeight>
+<MatrixWidth>106</MatrixWidth> <MatrixHeight>76</MatrixHeight>
+</TileMatrix>
+<TileMatrix>
+<ows:Identifier>1</ows:Identifier>
+<ScaleDenominator>1889884.7321501793</ScaleDenominator>
+<TopLeftCorner>399.9999999999998 -400.0</TopLeftCorner> <TileWidth>512</TileWidth> <TileHeight>512</TileHeight>
+<MatrixWidth>212</MatrixWidth> <MatrixHeight>152</MatrixHeight>
+</TileMatrix>
+<TileMatrix>
+<ows:Identifier>2</ows:Identifier>
+<ScaleDenominator>944942.3660750897</ScaleDenominator>
+<TopLeftCorner>399.9999999999998 -400.0</TopLeftCorner> <TileWidth>512</TileWidth> <TileHeight>512</TileHeight>
+<MatrixWidth>423</MatrixWidth> <MatrixHeight>304</MatrixHeight>
+</TileMatrix>
+<TileMatrix>
+<ows:Identifier>3</ows:Identifier>
+<ScaleDenominator>472471.18303754483</ScaleDenominator>
+<TopLeftCorner>399.9999999999998 -400.0</TopLeftCorner> <TileWidth>512</TileWidth> <TileHeight>512</TileHeight>
+<MatrixWidth>846</MatrixWidth> <MatrixHeight>608</MatrixHeight>
+</TileMatrix>
+<TileMatrix>
+<ows:Identifier>4</ows:Identifier>
+<ScaleDenominator>236235.59151877242</ScaleDenominator>
+<TopLeftCorner>399.9999999999998 -400.0</TopLeftCorner> <TileWidth>512</TileWidth> <TileHeight>512</TileHeight>
+<MatrixWidth>1691</MatrixWidth> <MatrixHeight>1215</MatrixHeight>
+</TileMatrix>
+<TileMatrix>
+<ows:Identifier>5</ows:Identifier>
+<ScaleDenominator>118117.79575938621</ScaleDenominator>
+<TopLeftCorner>399.9999999999998 -400.0</TopLeftCorner> <TileWidth>512</TileWidth> <TileHeight>512</TileHeight>
+<MatrixWidth>3382</MatrixWidth> <MatrixHeight>2430</MatrixHeight>
+</TileMatrix>
+<TileMatrix>
+<ows:Identifier>6</ows:Identifier>
+<ScaleDenominator>60476.31142880573</ScaleDenominator>
+<TopLeftCorner>399.9999999999998 -400.0</TopLeftCorner> <TileWidth>512</TileWidth> <TileHeight>512</TileHeight>
+<MatrixWidth>6606</MatrixWidth> <MatrixHeight>4746</MatrixHeight>
+</TileMatrix>
+<TileMatrix>
+<ows:Identifier>7</ows:Identifier>
+<ScaleDenominator>30238.155714402867</ScaleDenominator>
+<TopLeftCorner>399.9999999999998 -400.0</TopLeftCorner> <TileWidth>512</TileWidth> <TileHeight>512</TileHeight>
+<MatrixWidth>13211</MatrixWidth> <MatrixHeight>9491</MatrixHeight>
+</TileMatrix>
+<TileMatrix>
+<ows:Identifier>8</ows:Identifier>
+<ScaleDenominator>15119.077857201433</ScaleDenominator>
+<TopLeftCorner>399.9999999999998 -400.0</TopLeftCorner> <TileWidth>512</TileWidth> <TileHeight>512</TileHeight>
+<MatrixWidth>26421</MatrixWidth> <MatrixHeight>18982</MatrixHeight>
+</TileMatrix>
+</TileMatrixSet>
+</Contents>
+<ServiceMetadataURL xlink:href="http://localhost:6080/arcgis/rest/services/testmap/MyMapService/MapServer/WMTS/1.0.0/WMTSCapabilities.xml" /> </Capabilities>
