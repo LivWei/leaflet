@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html style="overflow: hidden">
   <head>
-    <title>demo</title>
+    <title>航天宏图-xyz</title>
     <meta name="content-type" content="text/html; charset=UTF-8" />
     <meta
       name="viewport"
@@ -49,37 +49,8 @@
           crs: L.CRS.CustomEPSG4326,
         }).setView([21.79, 110.71], 8);
 
-        const searchParams = new URLSearchParams(window.location.search);
-        const params = searchParams.get("params");
-        const cataId = searchParams.get("cataId");
-        console.log(params, cataId);
-
-        if (type == 'ht') {
-          const url =
-            layerUrl ||
-            "http://19.25.38.79:8021/mapserver/layer/WMTS/1.0/广东省市级行政区划/广东省市级行政区划/getTile/{TileMatrix}/{TileRow}/{TileCol}";
-          addLayers(map, url);
-        } else {
-          const url =
-            layerUrl ||
-            "http://19.45.1.42:8021/zgjcs/rest/services/SZMAP_ZW_2024_Q2_4490/WMTSServer";
-            // '/igs/rest/services/SZMAP_ZW_2024_Q2_4490/WMTSServer?token=846d7b91-d2a3-4edb-978c-48063e2840ef'
-          addWMTSLayer(map, url, '846d7b91-d2a3-4edb-978c-48063e2840ef');
-        }
-      }
-
-      function addWMTSLayer(map, url, token) {
-        new L.TileLayer.WMTS(
-          url,
-          {
-            token: token,
-            layer: "SZMAP_ZW_2024_Q2_4490", //名称
-            style: "default", //样式
-            format: "image/png",
-            matrixIds: "default",
-            attribution: "4490",
-          }
-        ).addTo(map);
+        const url = "http://19.25.38.79:8021/mapserver/layer/WMTS/1.0/广东省市级行政区划/广东省市级行政区划/getTile/{TileMatrix}/{TileRow}/{TileCol}";
+        addLayers(map, url);
       }
 
       function addLayers(map, url) {
