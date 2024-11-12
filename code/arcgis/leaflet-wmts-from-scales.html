@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html style="overflow: hidden">
+  <head>
+    <title>arcgis加载WMTS从比例尺获取分辨率</title>
+    <meta name="content-type" content="text/html; charset=UTF-8" />
+    <meta
+      name="viewport"
+      content="width=device-width,target-densitydpi=high-dpi,initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no"
+    />
+  </head>
+
+  <body onload="init()" style="margin: 0">
+    <div
+      id="map"
+      class="map"
+      style="position: absolute; bottom: 0px; top: 0px; width: 100%"
+    ></div>
+
+    <!-- leaflet -->
+    <link rel="stylesheet" href="../../leaflet/leaflet.css" />
+    <script src="../../leaflet/leaflet.js" type="text/javascript"></script>
+    <script
+      src="../../leaflet/leaflet.tilelayer.wmts.min.js"
+      type="text/javascript"
+    ></script>
+    <script src="../../leaflet/CustomWebSDK.js" type="text/javascript"></script>
+
+    <script src="../../leaflet/proj4-src.min.js"></script>
+    <script src="../../leaflet/proj4leaflet.min.js"></script>
+    <script>
+      //wmts和tilelayer基本相同，均需要提前指定leaflet的参考系（用于创建指定规格的网格用于加载）
+      //唯一的区别在于，附加很多参数用于控制返回，一个服务支持多组图层的任意组合，任意缓存（服务端支持）
+      //因为capbilty的存在因此标准的加载流程是解析getcability,获取主要参数，如gird的参数，构造网格等，然后借助额外的图层名称等参数完成加载，
+      //例如后台运维有必要参数如图层名称，基础url等配置
+      //
+
+      var dpi = 90.71428571429; //为什么是这个而不是常见的96dpi，因为wmts规范中有这么一句话dpi assumes 0.28mm as the physical distance of a pixel
+      //默认一个像素点的宽度是0.0028m   然后一英寸等于0.254 因此这里一英寸有90.7哥像素，因此dpi为此值
+
+      // 米 -> 度（地球球面） 转换系数
+      var meterToRadiusRatio = 111194.872221777;
+      // 英尺 -> 米 转换系数
+      var inchToMeterRatio = 0.0254000508;
+
+      //加载自定义的瓦片(非标准)格式，基于arcgis server测试
+      //原点-400,400（左上角）
+      //分辨率0.009517 参考图层的描述文件
+      // 通过Scale Denominator计算分辨率
+      function calcResolution(scaleDenominator) {
+        return (
+          (scaleDenominator * inchToMeterRatio) / (dpi * meterToRadiusRatio)
+        );
+      }
+
+      // var inch = 0.0254;
+      // var dpi = 90.71428571429;
+      // return scaleDenominator * (inch / dpi);
+
+      //再经纬度也就是地理参考系下，L.proj.crs的计算可能是存在问题的，这点可自行探究，经纬度最后需要转换成米,如果是投影下的参考系则是正常的
+      function getResolutionByScale(scales) {
+        return scales.map((i) => calcResolution(i));
+      }
+
+      function init() {
+        const testurl3 =
+          "http://172.16.4.105:6080/arcgis/rest/services/testmap/MyMapService/MapServer/WMTS";
+
+        //scales从WMTSCapabilities中来，这里需要计算出分辨率，由于leaflet的可能存在的bug或不完整代码，导致需要自己手动计算
+        const scales = [
+          3779769.4643003587, 1889884.7321501793, 944942.3660750897,
+          472471.18303754483, 236235.59151877242, 118117.79575938621,
+          60476.31142880573, 30238.155714402867, 15119.077857201433,
+        ];
+
+        const resolutions = getResolutionByScale(scales);
+
+        // const resolutions=[0.0095178440233211203,
+        //   0.0047589220116605602, 0.0023794610058302801, 0.00118973050291514, 0.00059486525145757002,
+        //   0.00029743262572878501, 0.00015228550437313792, 7.6142752186568962e-5, 3.8071376093284481e-5]
+
+        //如果只有scale信息需要计算resolution出来，原因在于L.proj.crs的计算可能是存在问题的在地理参考系下
+        const crs4490 = new L.Proj.CRS(
+          "EPSG:4490",
+          "+proj=longlat +ellps=GRS80 +no_defs +type=crs",
+          {
+            resolutions: resolutions,
+            origin: [-400, 400],
+          }
+        );
+
+        const map = L.map("map", {
+          crs: crs4490,
+          //maxzoom,minzoom以及layer的zoom需在0-8 总共只有九级别
+        }).setView([30.488466965192984, 114.55365478992464], 5);
+
+        addWMTSLayer(map, testurl3, "846d7b91-d2a3-4edb-978c-48063e2840ef");
+      }
+
+      function addWMTSLayer(map, url, token) {
+        new L.TileLayer.WMTS(url, {
+          tk: "18822034646069369d70e5264082114f",
+          layer: "MyMapService3",
+          tileSize: 512,
+          zoomOffset: 0,
+        }).addTo(map);
+      }
+    </script>
+  </body>
+</html>

@@ -1,0 +1,90 @@
+<!--
+ * @Author: liuwei 893624020@qq.com
+ * @Date: 2024-11-12 17:24:11
+ * @LastEditors: liuwei 893624020@qq.com
+ * @LastEditTime: 2024-11-12 18:47:53
+ * @FilePath: \leaflet\code\arcgis\leaflet-wmts.html
+ * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
+-->
+<!--
+ * @Author: liuwei 893624020@qq.com
+ * @Date: 2024-11-12 17:24:11
+ * @LastEditors: liuwei 893624020@qq.com
+ * @LastEditTime: 2024-11-12 17:24:26
+ * @FilePath: \leaflet\arcgis\indexarcgiswmts.html
+ * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
+-->
+<!DOCTYPE html>
+<html style="overflow: hidden">
+  <head>
+    <title>leaflet-wmts</title>
+    <meta name="content-type" content="text/html; charset=UTF-8" />
+    <meta
+      name="viewport"
+      content="width=device-width,target-densitydpi=high-dpi,initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no"
+    />
+  </head>
+
+  <body onload="init()" style="margin: 0">
+    <div
+      id="map"
+      class="map"
+      style="position: absolute; bottom: 0px; top: 0px; width: 100%"
+    ></div>
+
+    <!-- leaflet -->
+    <link rel="stylesheet" href="../../leaflet/leaflet.css" />
+    <script src="../../leaflet/leaflet.js" type="text/javascript"></script>
+    <script
+      src="../../leaflet/leaflet.tilelayer.wmts.min.js"
+      type="text/javascript"
+    ></script>
+    <script src="../../leaflet/CustomWebSDK.js" type="text/javascript"></script>
+
+    <script src="../../leaflet/proj4-src.min.js"></script>
+    <script src="../../leaflet/proj4leaflet.min.js"></script>
+    <script>
+      //wmts和tilelayer基本相同，均需要提前指定leaflet的参考系（用于创建指定规格的网格用于加载）
+      //唯一的区别在于，附加很多参数用于控制返回，一个服务支持多组图层的任意组合，任意缓存（服务端支持）
+      //因为capbilty的存在因此标准的加载流程是解析getcability,获取主要参数，如gird的参数，构造网格等，然后借助额外的图层名称等参数完成加载，
+      //例如后台运维有必要参数如图层名称，基础url等配置
+      //
+
+      function init() {
+        const testurl3 =
+          "http://172.16.4.105:6080/arcgis/rest/services/testmap/MyMapService/MapServer/WMTS";
+
+        const resolutions = [
+          0.0095178440233211203, 0.0047589220116605602, 0.0023794610058302801,
+          0.00118973050291514, 0.00059486525145757002, 0.00029743262572878501,
+          0.00015228550437313792, 7.6142752186568962e-5, 3.8071376093284481e-5,
+        ];
+
+        //如果只有scale信息需要计算resolution出来，原因在于L.proj.crs的计算可能是存在问题的在地理参考系下
+        const crs4490 = new L.Proj.CRS(
+          "EPSG:4490",
+          "+proj=longlat +ellps=GRS80 +no_defs +type=crs",
+          {
+            resolutions: resolutions,
+            origin: [-400, 400],
+          }
+        );
+
+        const map = L.map("map", {
+          crs: crs4490,
+          //maxzoom,minzoom以及layer的zoom需在0-8 总共只有九级别
+        }).setView([30.488466965192984, 114.55365478992464], 5);
+
+        addWMTSLayer(map, testurl3);
+      }
+
+      function addWMTSLayer(map, url, token) {
+        new L.TileLayer.WMTS(url, {
+          layer: "MyMapService3",
+          tileSize: 512,
+          zoomOffset: 0,
+        }).addTo(map);
+      }
+    </script>
+  </body>
+</html>
