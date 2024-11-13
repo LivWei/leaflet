@@ -1,0 +1,60 @@
+<!--
+ * @Author: liuwei 893624020@qq.com
+ * @Date: 2024-11-13 11:25:22
+ * @LastEditors: liuwei 893624020@qq.com
+ * @LastEditTime: 2024-11-13 14:09:14
+ * @FilePath: \map-demo\index.html
+ * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
+-->
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>map-view</title>
+
+    <style>
+      html, body, iframe {
+        height: 100%;
+        width: 100%;
+        overflow: hidden;
+        padding: 0;
+        margin: 0;
+      }
+    </style>
+  </head>
+  <body onload="init()">
+    <iframe id="mapContent" title="map" width="100%" height="100%"
+      src="">
+    </iframe>
+    <script>
+      function init() {
+        // 获取URL中的查询字符串
+        const searchParams = window.location.search;
+        // 使用URLSearchParams解析查询字符串
+        const params = new URLSearchParams(searchParams);
+        // 获取参数值
+        const type = params.get("type");
+        console.log(type)
+        switch (type) {
+          case 'ht':
+            document.querySelector('#mapContent').src = '/code/hangtianhongtu/leaflet-xyz.html'
+            break;
+          case 'tdt':
+            document.querySelector('#mapContent').src = '/code/taiinditu/leaflet-wmts.html'
+            break;
+            case 'ht':
+            document.querySelector('#mapContent').src = '/code/hangtianhongtu/leaflet-xyz.html'
+            break;
+          case 'zdsm':
+            document.querySelector('#mapContent').src = '/code/zhongdishuma/leaflet-wmts.html'
+            break;
+          case 'arcgis':
+            document.querySelector('#mapContent').src = '/code/arcgis/leaflet-wmts-from-scales-自定义网格.html'
+            break;
+          default:
+        }
+      }
+    </script>
+  </body>
+</html>
