@@ -2,7 +2,7 @@
  * @Author: liuwei 893624020@qq.com
  * @Date: 2024-11-12 17:45:50
  * @LastEditors: liuwei 893624020@qq.com
- * @LastEditTime: 2024-11-12 18:44:47
+ * @LastEditTime: 2024-11-13 14:41:00
  * @FilePath: \leaflet\arcgis\openlayers\openlayers-wmts.html
  * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
 -->
@@ -12,7 +12,7 @@
     <meta charset="utf-8" />
     <title>openlayers-wmts</title>
     <script src="../../openlayers/ol.js"></script>
-    <link rel="stylesheet" href="./../openlayers/ol.css" />
+    <link rel="stylesheet" href="../../openlayers/ol.css" />
     <style type="text/css">
       html,
       body,
@@ -40,7 +40,7 @@
             const result = parser.read(text);
             const options = ol.source.WMTS.optionsFromCapabilities(result, {
               layer: "testmap_MyMapService",
-              //如果有多个参考系的瓦片可以选着指定的matrix
+              matrixSet: 'default028mm'
             });
             console.log(options)
             map = new ol.Map({

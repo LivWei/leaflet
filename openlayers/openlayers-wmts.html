@@ -2,7 +2,7 @@
  * @Author: liuwei 893624020@qq.com
  * @Date: 2024-11-12 17:45:50
  * @LastEditors: liuwei 893624020@qq.com
- * @LastEditTime: 2024-11-12 18:39:05
+ * @LastEditTime: 2024-11-13 14:58:01
  * @FilePath: \leaflet\arcgis\openlayers\openlayers-wmts.html
  * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
 -->
@@ -28,7 +28,7 @@
     <div id="map"></div>
     <script type="text/javascript">
       const testurl3 =
-        "../1.xml";
+        "./1.xml";
 
       function init() {
         const parser = new ol.format.WMTSCapabilities();
@@ -49,8 +49,6 @@
               matrixSet: 'EPSG:4490_SZMAP_ZW_2024_Q2_44901_028mm_GB'
               //如果有多个参考系的瓦片可以选着指定的matrix
             });
-            debugger
-            options.urls[0] = 'http://19.45.1.42:8021/zgjcs/rest/services/SZMAP_ZW_2024_Q2_4490/WMTSServer?token=846d7b91-d2a3-4edb-978c-48063e2840ef'
             console.log(options)
             map = new ol.Map({
               layers: [
@@ -62,7 +60,7 @@
               target: "map",
               view: new ol.View({
                 center: ol.proj.transform(
-                  [110.71, 21.79],
+                  [114.16501234730903, 22.56133289411102],
                   "EPSG:4326",
                   "EPSG:3857"
                 ),
